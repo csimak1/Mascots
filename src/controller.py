@@ -31,6 +31,9 @@ class Controller:
     def gameIntroScreen(self):
         #Sound
         pygame.mixer.init()
+        sound = pygame.mixer.Sound("assets/song.mp3")
+        sound.set_volume(0.05)
+        sound.play()
         #Screen
         background = pygame.image.load(self.background_pic)
         background_size = self.screen.get_size()
@@ -118,18 +121,18 @@ class Controller:
         elif self.p2 == "gamecock":
             p2 = gamecock.Gamecock()
         if self.p1 == "bearcat":
-            p1 = bear.Bearcat()
+            p1 = bearcat.Bearcat()
         elif self.p2 == "bearcat":
-            p2 = bear.Bearcat()
+            p2 = bearcat.Bearcat()
         #initialize screen
         arena = pygame.image.load(self.arena)
         arena_size = self.screen.get_size()
-        arena_rect = background.get_rect()
+        arena_rect = arena.get_rect()
         arena_screen = pygame.display.set_mode(arena_size)
         arena_screen.blit(arena, arena_rect)
         self.screen.blit(arena, arena_rect)
-        self.screen.blit(self.p1,[100,500])
-        self.screen.blit(self.p2,[800,500])
+        self.screen.blit(p1,[100,500])
+        self.screen.blit(p2,[800,500])
         self.display.flip()
         # Initialize new screen with fighters
         # Fight
