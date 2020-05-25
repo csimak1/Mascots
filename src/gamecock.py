@@ -6,5 +6,5 @@ class Gamecock(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.name = "South Carolina"
         self.person = "Joe"
-        self.health = random.randint(5,15)
+        self.health = random.randint(1,30)
         self.image = pygame.image.load("assets/gamecock.png")

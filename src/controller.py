@@ -26,14 +26,14 @@ class Controller:
                 self.gameIntroScreen()
             elif self.state == "GAME":
                 self.gameLoop()
-            elif self.state == "LOSE":
+            elif self.state == "OVER":
                 self.gameOverScreen()
     def gameIntroScreen(self):
         #Sound
         pygame.mixer.init()
-        sound = pygame.mixer.Sound("assets/song.mp3")
-        sound.set_volume(0.05)
-        sound.play()
+        sound = pygame.mixer.music.load("assets/song.mp3")
+        pygame.mixer.music.set_volume(0.25)
+        pygame.mixer.music.play(-1, 0.0)
         #Screen
         background = pygame.image.load(self.background_pic)
         background_size = self.screen.get_size()
@@ -43,7 +43,7 @@ class Controller:
         self.screen.blit(background, background_rect)
         pygame.font.init()
         myfont = pygame.font.SysFont(None, 30)
-        message = myfont.render('Choose a Character', False, (255,255,255))
+        message = myfont.render('Choose your Character', False, (255,255,255))
         gator = myfont.render('GATOR', False,(255,153,51))
         bear = myfont.render('BEAR', False, (255,0,0))
         bearcat = myfont.render('BEARCAT', False, (0,153,76))
@@ -131,9 +131,9 @@ class Controller:
         arena_screen = pygame.display.set_mode(arena_size)
         arena_screen.blit(arena, arena_rect)
         self.screen.blit(arena, arena_rect)
-        self.surface.blit(p1,[100,500])
-        self.surface.blit(p2,[800,500])
-        self.display.flip()
+        self.screen.blit(p1.image,[100,200])
+        self.screen.blit(p2.image,[700,200])
+        pygame.display.flip()
         # Initialize new screen with fighters
         # Fight
         # Health bar
@@ -141,11 +141,22 @@ class Controller:
 
 
         def fight(p1, p2):
+            pygame.font.init()
+            myfont = pygame.font.SysFont("georgiaboldttf", 50, True)
             if p1.health > p2.health:
-                print(p1.name + " Wins!")
+                message = myfont.render(p1.name + '  Wins!' , False, (255,255,255))
+                self.screen.blit(message, [275,100])
             if p1.health < p2.health:
-                print(p2.name + " Wins!")
+                message2 = myfont.render(p2.name + '  Wins!' , False, (255,255,255))
+                self.screen.blit(message2, [275,100])
             if p1.health == p2.health:
-                print("wow you both suck")
+                message3 = myfont.render('Wow You Both Suck!', False, (255,255,255))
+                self.screen.blit(message3, [275,100])
         fight(p1,p2)
-        sys.exit()
+        pygame.display.flip()
+        self.state = "OVER"
+        self.mainLoop()
+    def gameOverScreen(self):
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                sys.exit()

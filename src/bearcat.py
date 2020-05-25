@@ -6,5 +6,5 @@ class Bearcat(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.name = "Binghamton"
         self.person = "Zac"
-        self.health = random.randint(1,10)
+        self.health = random.randint(1,300)
         self.image = pygame.image.load("assets/binghamton.png")
