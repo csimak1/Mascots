@@ -12,10 +12,13 @@ class Controller:
         self.height = 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.background_pic = "assets/background2.jpg"
+        self.arena = "assets/arena.png"
         self.state = "BEGIN"
         self.run = True
         self.white = (255,255,255)
-        
+        self.p1 = None
+        self.p2 = None
+
 
     def mainLoop(self):
         while self.run:
@@ -26,6 +29,9 @@ class Controller:
             elif self.state == "LOSE":
                 self.gameOverScreen()
     def gameIntroScreen(self):
+        #Sound
+        pygame.mixer.init()
+        #Screen
         background = pygame.image.load(self.background_pic)
         background_size = self.screen.get_size()
         background_rect = background.get_rect()
@@ -49,38 +55,94 @@ class Controller:
         self.screen.blit(bearcat,[500, 250])
         self.screen.blit(gamecock,[700, 250])
         pygame.display.flip()
+        pygame.key.set_repeat(1000)
         accum = 2
         while accum > 0:
             for event in pygame.event.get():
-                if event.key == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
                     if 160 < mouse_pos[0] < 260 and 230 < mouse_pos[1] < 280:
-                        if accum == 2:
-                            p1 = gator.Gator()
-                            accum -= 1
                         if accum == 1:
-                            p2 = gator.Gator()
+                            self.p1 = "gator"
+                            print(self.p1)
+                            accum -= 1
+                    if 160 < mouse_pos[0] < 260 and 230 < mouse_pos[1] < 280:
+                        if accum == 2:
+                            self.p2 = "gator"
+                            print(self.p2)
+                            accum -= 1
+                    if 324 < mouse_pos[0] < 414 and 230 < mouse_pos[1] < 280:
+                        if accum == 1:
+                            self.p1 = "bear"
+                            print(self.p1)
                             accum -= 1
                     if 324 < mouse_pos[0] < 414 and 230 < mouse_pos[1] < 280:
                         if accum == 2:
-                            p1 = bear.Bear()
+                            self.p2 = "bear"
+                            print(self.p2)
                             accum -= 1
+                    if 485 < mouse_pos[0] < 610 and 230 < mouse_pos[1] < 280:
                         if accum == 1:
-                            p2 = bear.Bear()
+                            self.p1 = "bearcat"
+                            print(self.p1)
                             accum -= 1
-                    if 160 < mouse_pos[0] < 260 and 230 < mouse_pos[1] < 280:
+                    if 485 < mouse_pos[0] < 610 and 230 < mouse_pos[1] < 280:
                         if accum == 2:
-                            p1 = bearcat.Bearcat()
+                            self.p2 = "bearcat"
+                            print(self.p2)
                             accum -= 1
+                    if 685 < mouse_pos[0] < 840 and 230 < mouse_pos[1] < 280:
                         if accum == 1:
-                            p2 = bearcat.Bearcat()
+                            self.p1 = "gamecock"
+                            print(self.p1)
                             accum -= 1
-                    if 160 < mouse_pos[0] < 260 and 230 < mouse_pos[1] < 280:
+                    if 685 < mouse_pos[0] < 840 and 230 < mouse_pos[1] < 280:
                         if accum == 2:
-                            p1 = gamecock.Gamecock()
+                            self.p2 = "gamecock"
+                            print(self.p2)
                             accum -= 1
-                        if accum == 1:
-                            p2 = gamecock.Gamecock()
-                            accum -= 1
+        self.state = "GAME"
+        self.mainLoop()
+    def gameLoop(self):
+        # initialize classes to players
+        if self.p1 == "bear":
+            p1 = bear.Bear()
+        elif self.p2 == "bear":
+            p2 = bear.Bear()
+        if self.p1 == "gator":
+            p1 = gator.Gator()
+        elif self.p2 == "gator":
+            p2 = gator.Gator()
+        if self.p1 == "gamecock":
+            p1 = gamecock.Gamecock()
+        elif self.p2 == "gamecock":
+            p2 = gamecock.Gamecock()
+        if self.p1 == "bearcat":
+            p1 = bear.Bearcat()
+        elif self.p2 == "bearcat":
+            p2 = bear.Bearcat()
+        #initialize screen
+        arena = pygame.image.load(self.arena)
+        arena_size = self.screen.get_size()
+        arena_rect = background.get_rect()
+        arena_screen = pygame.display.set_mode(arena_size)
+        arena_screen.blit(arena, arena_rect)
+        self.screen.blit(arena, arena_rect)
+        self.screen.blit(self.p1,[100,500])
+        self.screen.blit(self.p2,[800,500])
+        self.display.flip()
+        # Initialize new screen with fighters
+        # Fight
+        # Health bar
+        # Sound
 
-                self.mainLoop()
+
+        def fight(p1, p2):
+            if p1.health > p2.health:
+                print(p1.name + " Wins!")
+            if p1.health < p2.health:
+                print(p2.name + " Wins!")
+            if p1.health == p2.health:
+                print("wow you both suck")
+        fight(p1,p2)
+        sys.exit()
